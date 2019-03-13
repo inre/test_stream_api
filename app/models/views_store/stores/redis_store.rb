@@ -25,7 +25,9 @@ module ViewsStore
       end
 
       def each(&block)
-        @redis.smembers(all_key_path).each(&block)
+        @semaphore.synchronize do
+          @redis.smembers(all_key_path).each(&block)
+        end
       end
 
       def touch(key_id, value_id)
