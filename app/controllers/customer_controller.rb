@@ -1,17 +1,14 @@
 class CustomerController < ApplicationController
   include RenderResponse
 
-  before_action do
-    @customer_views = CustomerViews.new(params[:customer_id])
-  end
-
   def views
+    customer_views = CustomerViews.new(params[:customer_id])
     # Should actualize customer views before
-    @customer_views.cleanup
+    customer_views.cleanup
 
-    views_count = @customer_views.views_count
-    render_response(
+    views_count = customer_views.views_count
+    render json: {
       views: views_count
-    )
+    }
   end
 end
